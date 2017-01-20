@@ -3,6 +3,13 @@ Assignment 1 reflections.
 Please answer the questions below:
 
 1. How did this assignment go for you? (Please write several sentences.)
+   I did this assignment before i read the assigned reading, therefore, I thought the difficulty of this assignment is very decent and suitable. I searched several specific statements when I was working on it, but I think it will be better for me to first read the book, get some impression on these statements and improved my understanding of these statements by doing this assignment.Therefore, when assignment will become harder and harder for sure in the future, I gonna read before I actually start it.But all in all, it is a really helpful assignment to help me get more vision of simple c grammar.
+   
 2. What was hard about this assignment?
+   very easy for the first three exercises and a little bit challenging for the last one.
+   
 3. What would you like to know more about?
+   Probably I misunderstand the meaning of programing paradigm, so at first I want to know more about the paradigm of coding and learn more about other programming language other than java.Now I think it will be a good chance to learn c and through learning c, I can have more understanding of how a program run in a computer.
+   
 4. How long did this assignment take you? (Do not include time spent on the readings.)
+   2 hours in total.
