@@ -10,13 +10,14 @@
 int main(){
   char c;
   int character = 0;
-  int word = 0;
+  int word = 1;
   int line = 0;
 
   while((c= getchar()) != EOF){
     
     character ++;
-    if(isspace(c)){
+//character always use single quote to quote it, otherwise it turns to be a variable
+    if(isspace(c) && c != '\n'){
       word++; //if we have two white spaces here, it will add two words,wrong
     }
     if( c == '\n'){
@@ -24,7 +25,7 @@ int main(){
     }
     
   }
-
+  
   printf("char: %d\tword: %d\tline:%d\n", character, word,line);
 
 
