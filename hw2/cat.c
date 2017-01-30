@@ -12,7 +12,7 @@ int main(){
   
   while((c = getchar()) != EOF){
 
-      putchar(c);
+      printf("%c", c);
       
   }
   
