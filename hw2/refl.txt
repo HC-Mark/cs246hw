@@ -3,6 +3,12 @@ Assignment 2 reflections.
 Please answer the questions below:
 
 1. How did this assignment go for you? (Please write several sentences.)
+   The first four are relatively easy, but the last two took me two full night to figure them out. I think they really strengthened my
+   understanding of C and binary numbers. But I have to admit the assignment is kind of too chanllenging. Since I am taking both 380 and 
+   246, the workload for me is kind of too much.
 2. What was hard about this assignment?
+   I think it is very decent, and last two questions are very difficult.
 3. What would you like to know more about?
+   the command line, also I want to use array of c as soon as possible, since it is very helpful.
 4. How long did this assignment take you? (Do not include time spent on the readings.)
+   around 8 hours.
