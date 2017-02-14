@@ -13,7 +13,7 @@ int main()
   int test1[30][30];
   int result1 [30][30];
   clock_t start,end;
-  long total = 0;
+  unsigned long total = 0;
   rand_array(30,30,test1,1,10);
   start = clock();
 
