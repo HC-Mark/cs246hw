@@ -31,12 +31,44 @@ bool overlaps(int n, int* p1, int m, int* p2)
    in non-decreasing (increasing and contain equal terms) order. */
 void minisort(int* a, int* b, int* c)
 {
-  int high = *a, mid = *a, low = *a;
-  if(high < *b)
-    high = *b;
-  if(high < *c)
-    high = *c;
-
+  int high , mid , low ;//helper variable
+	if(*a > *b && *a > *c){
+	  high = *a;
+	  if(*b > *c){
+	  	*a = *c;
+		*c = high;
+		return;
+	  }
+	  else{
+	  	*a = *b;
+		*b = *c;
+		*c = high;
+		return;
+	  }
+	}
+	else if (*a > *b || *a > *c){
+		mid = *a;
+		if(*b > *c){
+			*a = *c;
+			*c = *b;
+			*b = mid;
+			return;
+		}
+		else{
+			*a = *b;
+			*b = mid;
+			return;
+		}
+	}
+	else{
+		if(*b > *c){
+			high = *b;
+			*b = *c;
+			*c = high;
+		}
+		else
+			return;
+	}
   
   
 }
