@@ -1,0 +1,33 @@
+<<<<<<< HEAD
+Assignment 5 reflections.
+
+Please answer the questions below:
+
+1. How did this assignment go for you? (Please write several sentences.)
+
+This assignment went well! It was a good introduction to pointers and I have never quite been able to grasp pointers but I think this class is really going to help. I can see myself getting the hang of them now! I also am more confident with Makefiles now. 
+	
+2. What was hard about this assignment?
+
+I actually found the overlap question confusing at first until I thought of it as two ranges of numbers overlapping. It also took a bit of thought to figure out how to check for rows, colums, and the two diagonals.  I can already see the benefit of pointers because compared to the amount of code I have for my 15 puzzle, this is a lot less. 
+
+3. What would you like to know more about?
+
+Just more pointer practice! 
+
+4. How long did this assignment take you? (Do not include time spent on the readings.)
+
+This assignment was really quick for me. It took less than two hours, not including the readings. I did spend extra time reviewing and doing the lab work before attempting the homework assignment. 
+||||||| merged common ancestors
+=======
+Assignment 5 reflections.
+
+Please answer the questions below:
+
+1. How did this assignment go for you? (Please write several sentences.)
+2. What was hard about this assignment?
+3. What would you like to know more about?
+4. What resources (other than our book) did you use (e.g., website links)?
+5. What collaborators did you work with to discuss the problems?
+6. How long did this assignment take you? (Do not include time spent on the readings.)
+>>>>>>> Add refl.txt
