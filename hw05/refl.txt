@@ -3,8 +3,15 @@ Assignment 5 reflections.
 Please answer the questions below:
 
 1. How did this assignment go for you? (Please write several sentences.)
+  This assignment is very easy for me. Before doing the assignment, I reviewed the chapter 12 and 11 of textbook and it helps me a lot. The assignment helps me have a clearer understanding of pointer.
+
 2. What was hard about this assignment?
+  I have to admit that minisort toke me longest. I tried to do some fancy loops to avoid pattern matching ( well, I know it is a Haskell term but I really think it is suitable to be used here.), but failed. So I tried to do pattern matching and it worked. 
 3. What would you like to know more about?
+   In my understanding of pointer, it is an address of another stuff in computer. Besides array, I think pointer must have its own advantage when we use it. But I did not see that much in this assignment, I really want to know how pointer help computer increase its efficiency.
 4. What resources (other than our book) did you use (e.g., website links)?
+  Textbook, chapter 12 and chapter 11. Chapter 12 is especailly helpful.
 5. What collaborators did you work with to discuss the problems?
+  Delyan and Eileen.
 6. How long did this assignment take you? (Do not include time spent on the readings.)
+  About one and a half hours. 
