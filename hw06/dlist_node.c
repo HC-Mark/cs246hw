@@ -1,11 +1,12 @@
 #include <stdlib.h>
 #include "dlist_node.h"
+#include <stdio.h>
 
 dlist_node* new_node(int data, dlist_node* next, dlist_node* prev){
-  dlist_node* n = melloc(sizeof(dlist_node));
+  dlist_node* n = malloc(sizeof(dlist_node));
   n->data = data;
-  d->next = next;
-  d->prev = prev;
+  n->next = next;
+  n->prev = prev;
   return n;
 }
 
@@ -21,9 +22,14 @@ void insert_after(dlist_node* n, int data){
 }
 
 void insert_before(dlist_node* n, int data){
-  dlist_node* new = new_node(data, n, n->prev);
-  n->prev->next = new;
-  n->prev = new;
+  if(n->prev != NULL){
+    dlist_node* new = new_node(data, n, n->prev);
+    n->prev->next = new;
+    n->prev = new;
+  }
+  else{
+    n->prev = new_node(data, n, n->prev);
+  }
 }
 
 void delete_node(dlist_node* n){
@@ -48,15 +54,13 @@ void delete_node(dlist_node* n){
 }
 
 dlist_node* nth_node(dlist_node* head, int n){
-  int i;
-  for( i = 0; i < n; i++, head = head->next)
+  for(; n>0; n--, head = head->next)
     ;
   return head;
 }
 
 dlist_node* nth_node_prev(dlist_node* tail, int n){
-  int i;
-  for( int i = 0; i < n; i++, tail = tail -> prev)
+  for(; n > 0; n--, tail = tail -> prev)
     ;
   return tail;
 }
@@ -83,7 +87,8 @@ dlist_node* from_array(int n, int a[n]){
 }
 
 int to_array(dlist_node* head, int n, int a[n]){
-  for(int i =0; i < n && head; i++, head = head->next){
+  int i;
+  for(i =0; i < n && head; i++, head = head->next){
     a[i] = head->data;
   }
   return i;
@@ -97,7 +102,45 @@ int length(dlist_node* head){
   return len;
 }
 
+//test if dlist_node, succeed!
+/*
 int main(){
-  return 0;
+  dlist_node* head = NULL;
+  dlist_node* tail = NULL;
+  int xs[] = { 1, 4, 8, 3, 5 };
+  int len = sizeof(xs)/sizeof(xs[0]);
+  // dlist_node* new_head = new_node(xs[0], head,tail);
+  dlist_node* new_tail = new_node(xs[4],head,tail);
+  
+
+  for(int i = len-1; i >= 1; i--)
+  {
+    insert_after(new_head,xs[i]);
+  }
+
+  
+  for(int i = 0; i < len-1; i++)
+  {
+    insert_before(new_tail,xs[i]);
+  }
+  
+  //delete_node(new->next->next);
+  //dlist_node* new_head = from_array(len,xs);
+  //printf(" %d \n", nth_node(new_head,4)->data);
+  
+  for(int i = 0; i < len; i++, new_head = new_head->next){
+     printf(" %d ", new_head->data);
+   }
+  
+  //printf("length of new_head = %d\n", length(new_head));
+  //printf(" %d \n", nth_node_prev(new_tail,4)->data);
+  // free(new_head);
+  // free(clear);
+  // printf(" %d \n", new_tail->data);
+  // printf(" %d \n", new_head->data);
+  //printf(" %d ", nth_node(new_head,0)->data);
+  //printf(" %d ", head->data);
+  
 }
+*/
 
