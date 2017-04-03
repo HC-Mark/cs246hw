@@ -5,63 +5,71 @@
 
 #include <check.h>
 
-#include "llist.h"
+#include "dlist.h"
 
 START_TEST(test_push_pop)
 {
-  llist l = llist_new();
+  dlist l = dlist_new();
   
-  ck_assert_int_eq(llist_size(l), 0);
+  ck_assert_int_eq(dlist_size(l), 0);
 
-  llist_push(l, 3);
-  llist_push(l, 4);
+  dlist_push(l, 3);
+  dlist_push(l, 4);
 
-  ck_assert_int_eq(llist_pop(l), 4);
-
-  llist_push(l, 5);
+  ck_assert_int_eq(dlist_pop(l), 4);
+  ck_assert_int_eq(dlist_size(l),1);
+  dlist_push(l, 5);
   ck_assert_int_eq(llist_peek(l), 5);
-  llist_push(l, 6);
+  dlist_push(l, 6);
+  //the list here should be [6,5,3]
+  ck_assert_int_eq(dlist_pop(l), 6);
+  dlist_push_end(l,1);//[5,3,1]
+  ck_assert_int_eq(dlist_peek_end(l,1));
+  ck_assert_int_eq(dlist_size(l), 3);
+  dlist_push_end(l,9);//[5,3,1,9]
+  ck_assert_int_eq(dlist_pop_end(l),9);//[5,3,1]
+  ck_assert_int_eq(dlist_pop(l), 5);//[3,1]
+  ck_assert_int_eq(dlist_peek(l), 3);
+  ck_assert_int_eq(dlist_pop(l), 3);//[1]
+  ck_assert_int_eq(dlist_size(l), 1);
+  ck_assert_int_eq(dlist_peek(l),1);
+  ck_assert_int_eq(dlist_peek(l),1);
+  ck_assert_int_eq(dlist_pop_end(l),1);
+  ck_assert_int_eq(dlist_size(l), 0);//[]
 
-  ck_assert_int_eq(llist_pop(l), 6);
-  ck_assert_int_eq(llist_size(l), 2);
-  ck_assert_int_eq(llist_pop(l), 5);
-  ck_assert_int_eq(llist_peek(l), 3);
-  ck_assert_int_eq(llist_pop(l), 3);
-  ck_assert_int_eq(llist_size(l), 0);
-
-  llist_free(l);
+  dlist_free(l);
 }
 END_TEST
 
 START_TEST(test_interior)
 {
-  llist l = llist_new();
+  dlist l = dlist_new();
 
-  llist_insert(l, 0, 3);
-  llist_insert(l, 0, 2);
-  llist_insert(l, 0, 1);
-  llist_insert(l, 1, 8);
-  llist_insert(l, 4, 10);
-  llist_insert(l, 1, 6);
+  dlist_insert(l, 0, 3);
+  dlist_insert(l, 0, 2);
+  dlist_insert(l, 0, 1);
+  dlist_insert(l, 1, 8);
+  dlist_insert(l, 4, 10);
+  dlist_insert(l, 1, 6);
 
   // should be [1, 6, 8, 2, 3, 10]
-  ck_assert_int_eq(llist_size(l), 6);
-  ck_assert_int_eq(llist_get(l, 2), 8);
-  ck_assert_int_eq(llist_get(l, 5), 10);
-  ck_assert_int_eq(llist_get(l, 0), 1);
+  ck_assert_int_eq(dlist_size(l), 6);
+  ck_assert_int_eq(dlist_get(l, 2), 8);
+  ck_assert_int_eq(dlist_get(l, 5), 10);
+  ck_assert_int_eq(dlist_get(l, 0), 1);
 
-  ck_assert_int_eq(llist_set(l, 2, 42), 8);
-  ck_assert_int_eq(llist_set(l, 5, 88), 10);
-  ck_assert_int_eq(llist_set(l, 0, 33), 1);
+  ck_assert_int_eq(dlist_set(l, 2, 42), 8);
+  ck_assert_int_eq(dlist_set(l, 5, 88), 10);
+  ck_assert_int_eq(dlist_set(l, 0, 33), 1);
 
-  ck_assert_int_eq(llist_remove(l, 1), 6);
-  ck_assert_int_eq(llist_remove(l, 0), 33);
-  ck_assert_int_eq(llist_remove(l, 3), 88);
+  ck_assert_int_eq(dlist_remove(l, 1), 6);
+  ck_assert_int_eq(dlist_remove(l, 0), 33);
+  ck_assert_int_eq(dlist_remove(l, 3), 88);
 
-  ck_assert_int_eq(llist_size(l), 3);
-  ck_assert_int_eq(llist_peek(l), 42);
+  ck_assert_int_eq(dlist_size(l), 3);
+  ck_assert_int_eq(dlist_peek(l), 42);
 
-  llist_free(l);
+  dlist_free(l);
 }
 END_TEST
 
