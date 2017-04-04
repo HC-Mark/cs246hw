@@ -4,7 +4,7 @@
 
 #ifndef DLIST_H_
 #define DLIST_H_
-
+#include "dlist_node.h"
 // An abstract type for sequences
 typedef struct dlist_record* dlist;
 
@@ -64,4 +64,8 @@ int dlist_remove(dlist l, int n);
 // frees an dlist. Takes O(size(l)) steps.
 void dlist_free(dlist l);
 
+//two helper functions for checking
+dlist_node* head(dlist l);
+
+dlist_node* tail(dlist l);
 #endif

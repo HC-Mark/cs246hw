@@ -48,10 +48,15 @@ void dlist_push_end(dlist l, int elt){
 int dlist_pop(dlist l){
   dlist_node* old_head = l->head;
   int val = old_head->data;
-  old_head->next->prev = old_head->prev;
-  l->head = old_head->next;
-  l->size--;
-
+  if(old_head -> next == NULL){
+    l->tail = NULL;
+    l->head = NULL;
+  }
+  else{
+    old_head->next->prev = old_head->prev;
+    l->head = old_head->next;
+    l->size--;
+  }
   free(old_head);
   return val;
 }
@@ -63,12 +68,17 @@ int dlist_peek(dlist l){
 int dlist_pop_end(dlist l){
   dlist_node* old_tail = l->tail;
   int val = old_tail->data;
-  old_tail->prev->next = old_tail->next;
-  l->tail = old_tail->prev;
+  if(old_tail -> prev == NULL){
+    l->tail = NULL;
+    l->head = NULL;
+  }
+  else{
+    old_tail -> prev -> next = old_tail -> next;
+    l->tail = old_tail -> prev;
+  }
+  free(old_tail);
   //printf("our tail of list is  %d \n", l->tail->data);
   l->size--;
-
-  free(old_tail);
   return val;
 }
 
@@ -158,9 +168,25 @@ void dlist_free(dlist l){
   free(l);
 }
 
+//two helper functions for checking
+dlist_node* head(dlist l){
+  if(l->head == NULL)
+    printf("useless user\n");
+  else
+    return l->head;
+}
+
+dlist_node* tail(dlist l){
+  if(l->tail == NULL)
+    printf("useless user\n");
+  else
+    return l->tail;
+}
+/*
 int main(){
   //so still , the insert and get does not work if n > len/2
   dlist l = dlist_new();
+
   
   dlist_insert(l, 0, 3);
   dlist_insert(l, 0, 2);
@@ -169,6 +195,7 @@ int main(){
   dlist_insert(l, 4, 10);
   dlist_insert(l, 1, 6);
   dlist_node* test = l->head;
+  printf("  %d  \n", dlist_pop_end(l));
   // printf(" %d \n", tail->data);
   // printf(" %d \n", dlist_get(l,3));
   printf("we remove %d \n",dlist_set(l,5,22));
@@ -180,7 +207,18 @@ int main(){
   
   // dlist_node* test = nth_node_prev(l->tail,1);
     printf("size of list is  %d \n", dlist_size(l));
-    
+  
+  dlist_push(l, 3);
+  dlist_push(l, 4);
+  printf(" %d \n", dlist_pop(l));
+  dlist_push(l,5);
+  dlist_push_end(l,6);
+  //printf(" %d \n", l->tail->data);
+  printf(" %d \n", dlist_remove(l,2));
+  printf(" %d \n", l->tail->data);
   dlist_free(l);
   return 0;
 }
+
+
+*/

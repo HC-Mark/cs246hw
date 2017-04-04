@@ -1,6 +1,5 @@
-/* check_llist.c
-
-   Unit tests for llists
+/* check_dlist.c
+   Unit tests for dlists
 */
 
 #include <check.h>
@@ -15,16 +14,18 @@ START_TEST(test_push_pop)
 
   dlist_push(l, 3);
   dlist_push(l, 4);
-
+  
   ck_assert_int_eq(dlist_pop(l), 4);
+  
   ck_assert_int_eq(dlist_size(l),1);
   dlist_push(l, 5);
-  ck_assert_int_eq(llist_peek(l), 5);
+  ck_assert_int_eq(dlist_peek(l), 5);
   dlist_push(l, 6);
   //the list here should be [6,5,3]
+  
   ck_assert_int_eq(dlist_pop(l), 6);
   dlist_push_end(l,1);//[5,3,1]
-  ck_assert_int_eq(dlist_peek_end(l,1));
+  ck_assert_int_eq(dlist_peek_end(l),1);
   ck_assert_int_eq(dlist_size(l), 3);
   dlist_push_end(l,9);//[5,3,1,9]
   ck_assert_int_eq(dlist_pop_end(l),9);//[5,3,1]
@@ -33,10 +34,10 @@ START_TEST(test_push_pop)
   ck_assert_int_eq(dlist_pop(l), 3);//[1]
   ck_assert_int_eq(dlist_size(l), 1);
   ck_assert_int_eq(dlist_peek(l),1);
-  ck_assert_int_eq(dlist_peek(l),1);
+  ck_assert_int_eq(dlist_peek_end(l),1);
   ck_assert_int_eq(dlist_pop_end(l),1);
   ck_assert_int_eq(dlist_size(l), 0);//[]
-
+  
   dlist_free(l);
 }
 END_TEST
