@@ -126,7 +126,13 @@ array merge_arrays(array src1, array src2)
   int r1 = len1;
   int l2 = 0;
   int r2 = len2;
-
+   //if any of the array is empty, just return the other array.
+  if(len1 == 0){
+    return src2;
+  }
+  if(len2 == 0){
+    return src1;
+  }
   while(l1 <= r1 && l2 <= r2){
     int result = strcmp(array_get(src1,l1)->name,array_get(src2,l2)->name);
     //if the name of the cast member in src1 is larger than or equal to that in src2, store the cast member of src2 in new array first
