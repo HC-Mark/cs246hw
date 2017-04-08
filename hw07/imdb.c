@@ -20,6 +20,16 @@
 #define HEADER_LINES 239
 #define STRING_SIZE  200
 #define LEN "199"
+//Discards all new_line sign in the string
+void clean_new_line(char* str){
+  char* track;
+  for(track = str; track; track++){
+    if(*track == '\n'){
+      *track = 0;
+      return;
+    }
+  }
+}
 // Discards all characters until the end of a line in the given file
 void skip_line(FILE* file)
 {
@@ -121,7 +131,9 @@ int main(int argc, char** argv)
     // in the assignment.
     // When the user is done, this should `break`.
     char search[STRING_SIZE];
+    printf("Enter the actor/actress you want to search: \n");
     if(fgets(search,STRING_SIZE,stdin) != NULL){
+      clean_new_line(search);
       cast_member* want = find_cast_member(all_cast,search);
       printf("you want to find %s\n", want->name);//can we directly print name by using this?
       llist_node* head = llist_head(want->movies);
