@@ -1,13 +1,12 @@
 /* imdb.c
-
    Main program for interactive IMDB viewer.
-
    Name:
    Resources used (websites / peers / etc):
 */
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "array.h"
 #include "map.h"
@@ -17,7 +16,7 @@
 #include "imdb_functions.h"
 
 // the IMDB files contain 239 header lines
-#define HEADER_LINES 239
+#define HEADER_LINES 239 //it is not useful for the original actresses.list
 #define STRING_SIZE  200
 #define LEN "199"
 //Discards all new_line sign in the string
@@ -69,8 +68,9 @@ array read_cast_member_file(char* filename, map all_movies)
     switch(result)
     {
     case SUCCESS:
+      //printf("old size is %d\n",array_size(cast));
       array_add(cast, member);
-
+      //printf("now size is %d\n",array_size(cast));
       // This is helpful for seeing progress as you're loading a file.
       if(array_size(cast) % 1000 == 0)
 	printf("Added cast member %s\n", member->name);
@@ -102,10 +102,11 @@ int main(int argc, char** argv)
   array all_cast = array_new();
 
   // start i at one to skip program name
+  // printf("argc is %d\n", argc);
   for(int i = 1; i < argc; i++)
   {
     array some_cast = read_cast_member_file(argv[i], all_movies);
-
+    //printf("size of some cast is %d\n", array_size(some_cast));
     if(!some_cast)
     {
        // file reading failed, but read_cast_member_file alerted the user already
@@ -117,35 +118,50 @@ int main(int argc, char** argv)
     // and all_cast has all previous cast members.
     // You need to merge (with a call to merge_arrays) these two arrays, producing
     // a new all_cast that contains both.
+    //printf("size of all cast is %d\n", array_size(all_cast));
     array new_all_cast = merge_arrays(all_cast, some_cast);
-    array_free(all_cast);
-    array_free(some_cast);
+    printf("size of all cast is %d\n", array_size(all_cast));
+    printf("size of some cast is %d\n", array_size(some_cast));
+    printf("size of new all cast is %d\n", array_size(new_all_cast));
+    //array_free(all_cast);
+    //array_free(some_cast);free here will get lost of the whole all_cast array
+    
     all_cast = new_all_cast;//now, all_cast points to a new array merged by all_cast and some_cast
     
   }
-
+  
   for(;;)
   {
     // WRITE CODE HERE
     // This is the main interactive loop, which you must write, as described
     // in the assignment.
     // When the user is done, this should `break`.
-    char search[STRING_SIZE];
+    char search[STRING_SIZE] = "";
     printf("Enter the actor/actress you want to search: \n");
-    if(fgets(search,STRING_SIZE,stdin) != NULL){
-      clean_new_line(search);
+    fgets(search,STRING_SIZE,stdin);//get an infinite loop if I use in this way -- but solve by some magic
+    //if(search != "") I forget everything about string
+    clean_new_line(search);
+    if(strcmp(search,"") != 0){
+      //printf("all cast is %d\n", array_size(all_cast));
       cast_member* want = find_cast_member(all_cast,search);
-      printf("you want to find %s\n", want->name);//can we directly print name by using this?
-      llist_node* head = llist_head(want->movies);
-      int len = llist_size(want->movies);
-      for(int i = 0; i < len; i++,head = head->next){
-	printf("%s is a cast of moive: %s\n", want->name, head->data->name);
+      if(want){
+	printf("you want to find %s\n", want->name);//can we directly print name by using this?
+	llist_node* head = llist_head(want->movies);
+	int len = llist_size(want->movies);
+	for(int i = 0; i < len; i++,head = head->next){
+	  printf("%s is a cast of moive: %s\n", want->name, head->data->name);
+	}
+      }
+      else{
+	printf("Can't find that actor/actress you want, sorry, try again!\n");
       }
     }
     else{
       printf("Thank you for using this app!\n"); 
       break;
     }
+    
+    
   }
 
   // WRITE CODE HERE

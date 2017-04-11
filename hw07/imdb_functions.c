@@ -1,6 +1,5 @@
 /* imdb_functions.c
-
-   Name:
+   Name:Tianming Xu
    Resources used (websites / peers / etc):HackerRank.com(merge sort algorithms)
 */
 
@@ -95,6 +94,7 @@ read_result read_cast_member(FILE* file, cast_member* member, map all_movies)
       //add new_movie to the map
       map_put(all_movies, target, new_movie);
       //update data
+      //printf("old size: %d\n", array_size(new_movie->cast)
       array_add(new_movie -> cast, member);
       llist_add(member->movies, new_movie);
     }
@@ -123,9 +123,9 @@ array merge_arrays(array src1, array src2)
   */
   array new = array_new();
   int l1 = 0;
-  int r1 = len1;
+  int r1 = len1-1;
   int l2 = 0;
-  int r2 = len2;
+  int r2 = len2-1; // always do some stupid things, why use len2,which access out of index
    //if any of the array is empty, just return the other array.
   if(len1 == 0){
     return src2;
@@ -146,7 +146,7 @@ array merge_arrays(array src1, array src2)
       l1++;
     }
   }
-
+  printf("I know I succeed pass\n");
   //deal with the elements left in these two arrays
   while(l1 <= r1){
     array_add(new,array_get(src1,l1));
@@ -168,10 +168,12 @@ array merge_arrays(array src1, array src2)
 cast_member* find_cast_member(array cast, char* name)
 {
   int len = array_size(cast);
-  int low = 1;
-  int high = len;
-  int mid = low + (high - low)/2;
+  int low = 0;
+  int high = len-1;
+  int mid;
+  //printf("this time len is :%d\n", len);
   while(low <= high){
+    mid = low + (high - low)/2;
     int result = strcmp(array_get(cast,mid)->name,name);
     if(result == 0)
       return array_get(cast, mid);
@@ -183,6 +185,7 @@ cast_member* find_cast_member(array cast, char* name)
       //name is in left side of cast
       high = mid -1;
     }
+    //printf("this time mid is :%d\n", mid);
   }
   
   return NULL;
