@@ -16,7 +16,7 @@
 #include "imdb_functions.h"
 
 // the IMDB files contain 239 header lines
-#define HEADER_LINES 239 //it is not useful for the original actresses.list
+#define HEADER_LINES 241 //it is not useful for the original actresses.list
 #define STRING_SIZE  200
 #define LEN "199"
 //Discards all new_line sign in the string
@@ -28,12 +28,6 @@ void clean_new_line(char* str){
       return;
     }
   }
-}
-// Discards all characters until the end of a line in the given file
-void skip_line(FILE* file)
-{
-  while(!feof(file) && getc(file) != '\n')
-    ;
 }
 
 // Reads in a file containing a list of cast members
@@ -120,9 +114,9 @@ int main(int argc, char** argv)
     // a new all_cast that contains both.
     //printf("size of all cast is %d\n", array_size(all_cast));
     array new_all_cast = merge_arrays(all_cast, some_cast);
-    printf("size of all cast is %d\n", array_size(all_cast));
-    printf("size of some cast is %d\n", array_size(some_cast));
-    printf("size of new all cast is %d\n", array_size(new_all_cast));
+    //printf("size of all cast is %d\n", array_size(all_cast));
+    //printf("size of some cast is %d\n", array_size(some_cast));
+    //printf("size of new all cast is %d\n", array_size(new_all_cast));
     //array_free(all_cast);
     //array_free(some_cast);free here will get lost of the whole all_cast array
     
@@ -166,7 +160,13 @@ int main(int argc, char** argv)
 
   // WRITE CODE HERE
   // Free all used memory before exiting.
-  
+  printf("the size of Map is %d\n", map_size(all_movies));
+  printf("the size of all_cast is %d\n", array_size(all_cast));
+
+  array_free(all_cast);
+  //I learn that array_free will not touch the cast_member object
+  //printf("the size of Map is %s\n", map_get(all_movies,"")->name);
+  //printf("the test is %s\n", array_get(all_cast,1)->name);
   return 0;
 }
 

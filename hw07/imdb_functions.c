@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 
 #include "imdb_functions.h"
 #include "types.h"//need this to specify the cast_member and movies type
@@ -22,6 +23,7 @@ char* malloc_string(char* str)
 }
 
 // is the given string composed entirely of dashes?
+
 bool all_dashes(char* str)
 {
   while(*str)
@@ -32,6 +34,44 @@ bool all_dashes(char* str)
     }
   }
   return true;
+}
+
+// Discards all characters until the end of a line in the given file
+void skip_line(FILE* file)
+{
+  while(!feof(file) && getc(file) != '\n')
+    ;
+}
+
+
+// like strcmp, but ignores differences in case (why does this work?)
+int stricmp(char* s1, char* s2)
+ {
+   while(true)
+     {
+       char c1 = *s1++;
+       char c2 = *s2++;
+       int d = toupper(c1) - toupper(c2);
+       
+       if(d != 0 || !c1)
+	 {
+	   return d;
+	 }
+     }
+ }
+
+// are there any non-ascii characters in the string?
+bool any_bad_chars(char* str)
+{
+  while(*str)
+    {
+      char c = *str++;
+      if(c < 0)
+	{
+	  return true;
+	}
+    }
+  return false;
 }
 
 // Reads in a cast member from the given file
@@ -46,9 +86,13 @@ bool all_dashes(char* str)
 read_result read_cast_member(FILE* file, cast_member* member, map all_movies)
 {
   char buf[STRING_SIZE];
+  
   if(fscanf(file, "%" LEN "[^\t\n]", buf) != 1) return FAILURE;
 
   if(all_dashes(buf)) return END_OF_LIST;
+
+ // non-ascii chars are alphabetized differently, so we can't handle them here
+  if(any_bad_chars(buf)) return FAILURE;
 
   // WRITE CODE HERE
   // At this point, `buf` contains the name of the cast member, and you can
@@ -59,7 +103,7 @@ read_result read_cast_member(FILE* file, cast_member* member, map all_movies)
 
   while(fscanf(file, "%*[\t]%" LEN "[^\n]", buf) == 1)
   {
-    getc(file); // eat the newline
+    skip_line(file);//eat rest of line
     
     // cut it off at the first instance of 2 spaces
     char* spaces = strstr(buf, "  ");
@@ -94,7 +138,6 @@ read_result read_cast_member(FILE* file, cast_member* member, map all_movies)
       //add new_movie to the map
       map_put(all_movies, target, new_movie);
       //update data
-      //printf("old size: %d\n", array_size(new_movie->cast)
       array_add(new_movie -> cast, member);
       llist_add(member->movies, new_movie);
     }
@@ -146,7 +189,6 @@ array merge_arrays(array src1, array src2)
       l1++;
     }
   }
-  printf("I know I succeed pass\n");
   //deal with the elements left in these two arrays
   while(l1 <= r1){
     array_add(new,array_get(src1,l1));

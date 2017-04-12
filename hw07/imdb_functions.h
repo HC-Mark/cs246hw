@@ -11,6 +11,12 @@
 #include "array.h"
 #include "map.h"
 
+// Discards all characters until the end of a line in the given file
+void skip_line(FILE* file);
+ 
+// like strcmp, but ignores differences in case
+int stricmp(char* s1, char* s2);
+
 // reading in a cast member can have one of three results:
 typedef enum read_result {
   FAILURE,      // the cast member entry is somehow malformed
