@@ -97,8 +97,9 @@ read_result read_cast_member(FILE* file, cast_member* member, map all_movies)
   // WRITE CODE HERE
   // At this point, `buf` contains the name of the cast member, and you can
   // fill in the two data fields of *member.
-  member->name = malloc(sizeof(char) * STRING_SIZE);//remember to free it
-  strcpy(member->name, buf);//allocate the memory and copy the content of buf to that memory, then let name to point to that piece of memory
+  member->name = malloc_string(buf);
+  //member->name = malloc(sizeof(char) * STRING_SIZE);//remember to free it
+  //strcpy(member->name, buf);//allocate the memory and copy the content of buf to that memory, then let name to point to that piece of memory
   member->movies = llist_new();
 
   while(fscanf(file, "%*[\t]%" LEN "[^\n]", buf) == 1)
@@ -177,7 +178,7 @@ array merge_arrays(array src1, array src2)
     return src1;
   }
   while(l1 <= r1 && l2 <= r2){
-    int result = strcmp(array_get(src1,l1)->name,array_get(src2,l2)->name);
+    int result = stricmp(array_get(src1,l1)->name,array_get(src2,l2)->name);
     //if the name of the cast member in src1 is larger than or equal to that in src2, store the cast member of src2 in new array first
     if( result >= 0) {
       array_add(new,array_get(src2,l2));
@@ -216,7 +217,7 @@ cast_member* find_cast_member(array cast, char* name)
   //printf("this time len is :%d\n", len);
   while(low <= high){
     mid = low + (high - low)/2;
-    int result = strcmp(array_get(cast,mid)->name,name);
+    int result = stricmp(array_get(cast,mid)->name,name);
     if(result == 0)
       return array_get(cast, mid);
     else if(result < 0){

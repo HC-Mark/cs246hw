@@ -66,7 +66,7 @@ array read_cast_member_file(char* filename, map all_movies)
       array_add(cast, member);
       //printf("now size is %d\n",array_size(cast));
       // This is helpful for seeing progress as you're loading a file.
-      if(array_size(cast) % 1000 == 0)
+      if(array_size(cast) % 10 == 0)
 	printf("Added cast member %s\n", member->name);
       
       break;
@@ -135,7 +135,7 @@ int main(int argc, char** argv)
     fgets(search,STRING_SIZE,stdin);//get an infinite loop if I use in this way -- but solve by some magic
     //if(search != "") I forget everything about string
     clean_new_line(search);
-    if(strcmp(search,"") != 0){
+    if(stricmp(search,"") != 0){
       //printf("all cast is %d\n", array_size(all_cast));
       cast_member* want = find_cast_member(all_cast,search);
       if(want){
@@ -163,10 +163,19 @@ int main(int argc, char** argv)
   printf("the size of Map is %d\n", map_size(all_movies));
   printf("the size of all_cast is %d\n", array_size(all_cast));
 
-  array_free(all_cast);
+  int len = array_size(all_cast);
+  
+  for(int i = 0; i < len; i++){
+    cast_member* clean = array_get(all_cast,i);
+    free(clean->name);
+    llist_free(clean->movies);
+    free(clean);
+  }
+
+  map_free(all_movies);
   //I learn that array_free will not touch the cast_member object
-  //printf("the size of Map is %s\n", map_get(all_movies,"")->name);
-  //printf("the test is %s\n", array_get(all_cast,1)->name);
+  // printf("the size of Map is %s\n", map_get(all_movies,"Todo x Sara (2014)")->name);
+  array_free(all_cast);
+  //printf("the test is %s\n", array_get(all_cast,0)->name);
   return 0;
 }
-
