@@ -132,8 +132,7 @@ read_result read_cast_member(FILE* file, cast_member* member, map all_movies)
     else{
       movie* new_movie = malloc(sizeof(movie));
       //set up the name for the new_movie
-      new_movie -> name = malloc(sizeof(char) * STRING_SIZE);
-      strcpy(new_movie -> name, target);
+      new_movie -> name = malloc_string(target);
       //set up the cast list for new_movie
       new_movie -> cast = array_new();
       //add new_movie to the map
@@ -159,12 +158,6 @@ array merge_arrays(array src1, array src2)
   int len1 = array_size(src1);
   int len2 = array_size(src2);
 
-  /*wrong defined new
-  array new = malloc(sizeof(array_record));
-  arr-> mem = malloc (sizeof(cast_member*) * (len1 + len2));
-  arr->size = len1 + len2;
-  arr->num_elements = 0;
-  */
   array new = array_new();
   int l1 = 0;
   int r1 = len1-1;
@@ -172,10 +165,18 @@ array merge_arrays(array src1, array src2)
   int r2 = len2-1; // always do some stupid things, why use len2,which access out of index
    //if any of the array is empty, just return the other array.
   if(len1 == 0){
-    return src2;
+    while(l2 <= r2){
+	array_add(new,array_get(src2,l2));
+	l2++;
+      }
+    return new;
   }
   if(len2 == 0){
-    return src1;
+    while(l1 <= r1){
+      array_add(new,array_get(src1,l1));
+      l1++;
+    }
+    return new;
   }
   while(l1 <= r1 && l2 <= r2){
     int result = stricmp(array_get(src1,l1)->name,array_get(src2,l2)->name);
@@ -199,7 +200,7 @@ array merge_arrays(array src1, array src2)
     array_add(new,array_get(src2,l2));
     l2++;
   }
-  
+
   return new; 
 }
 

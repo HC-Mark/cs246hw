@@ -10,10 +10,6 @@
 #include "map.h"
 #include "tree_node.h"
 
-typedef struct map_record {
-  tree_node* root;
-  int size;
-} map_record;
 
 // finds a node in the tree, or returns NULL if there isn't one
 tree_node* find_node(tree_node* root, char* s)

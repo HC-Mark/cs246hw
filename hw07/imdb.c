@@ -12,7 +12,7 @@
 #include "map.h"
 #include "llist.h"
 #include "types.h"
-
+#include "tree_node.h"
 #include "imdb_functions.h"
 
 // the IMDB files contain 239 header lines
@@ -29,7 +29,30 @@ void clean_new_line(char* str){
     }
   }
 }
+//used to clean the movie objects
+void clean_movie(tree_node* root){
+  if(root){
+    movie* clean = root -> value;
+    free(clean->name);
+    array_free(clean->cast);
+    clean_movie(root->left);
+    clean_movie(root->right);
+    free(clean);
+  }
 
+}
+
+void clean_cast(array arr){
+  int len = array_size(arr);
+  
+  for(int i = 0; i < len; i++){
+    cast_member* clean = array_get(arr,i);
+    free(clean->name);
+    llist_free(clean->movies);
+    free(clean);
+  }
+
+}
 // Reads in a file containing a list of cast members
 // preconditions: all_movies exists and maps all movies encountered so far
 // postconditions: If the file can be read successfully, returns an array
@@ -114,12 +137,9 @@ int main(int argc, char** argv)
     // a new all_cast that contains both.
     //printf("size of all cast is %d\n", array_size(all_cast));
     array new_all_cast = merge_arrays(all_cast, some_cast);
-    //printf("size of all cast is %d\n", array_size(all_cast));
-    //printf("size of some cast is %d\n", array_size(some_cast));
-    //printf("size of new all cast is %d\n", array_size(new_all_cast));
-    //array_free(all_cast);
-    //array_free(some_cast);free here will get lost of the whole all_cast array
-    
+    //clean both array I used to merge
+    array_free(all_cast);
+    array_free(some_cast);
     all_cast = new_all_cast;//now, all_cast points to a new array merged by all_cast and some_cast
     
   }
@@ -163,6 +183,7 @@ int main(int argc, char** argv)
   printf("the size of Map is %d\n", map_size(all_movies));
   printf("the size of all_cast is %d\n", array_size(all_cast));
 
+  /*
   int len = array_size(all_cast);
   
   for(int i = 0; i < len; i++){
@@ -171,8 +192,13 @@ int main(int argc, char** argv)
     llist_free(clean->movies);
     free(clean);
   }
+  */
 
-  map_free(all_movies);
+  clean_cast(all_cast);
+  //clean all the movie objects in the tree
+  clean_movie(all_movies -> root);
+  //clean the map itself
+  map_free(all_movies);//too naive, in movies they still have some arrays in them
   //I learn that array_free will not touch the cast_member object
   // printf("the size of Map is %s\n", map_get(all_movies,"Todo x Sara (2014)")->name);
   array_free(all_cast);

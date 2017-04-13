@@ -9,9 +9,14 @@
 #include <stdbool.h>
 
 #include "abstract_types.h"
-
+#include "tree_node.h"
 // An abstract type for maps from strings to movie*s.
 typedef struct map_record* map;
+
+typedef struct map_record {
+  tree_node* root;
+  int size;
+} map_record;
 
 // Create an empty map. Make sure to call map_free when you're done with it.
 map map_new();
