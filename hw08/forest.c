@@ -81,8 +81,8 @@ void forest_insert(forest l, huff_tree_node* node)
       forest_node* one_after;
     for(i = 1; i < size ; i++){
           //printf("%d\n",i);
-      one_after = nth_node(l->head,i-1);
-      one_before = nth_node(l->head, i);
+      one_before = nth_node(l->head,i-1);
+      one_after = nth_node(l->head, i);
       huff_tree_node* temp = one_after -> data;
       if(temp ->freq < node -> freq)
 	continue;
