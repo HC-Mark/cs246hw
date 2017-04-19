@@ -62,7 +62,6 @@ void forest_insert(forest l, huff_tree_node* node)
   forest_node* tail;
   int size = forest_size(l);
   tail = nth_node(l->head, size-1);
-  //printf("size valid? %d\n", size);
   if(l->head == NULL)
   {
     forest_push(l, node);
@@ -74,15 +73,14 @@ void forest_insert(forest l, huff_tree_node* node)
   }
   else if(tail-> data -> freq < node->freq){
     forest_node_insert_after(tail,node);
-    printf("123\n");
   }
   else
     {
       int i;
       forest_node* one_before;
       forest_node* one_after;
-    for(i = 1; i < l->size; i++){
-          printf("%d\n",i);
+    for(i = 1; i < size ; i++){
+          //printf("%d\n",i);
       one_after = nth_node(l->head,i-1);
       one_before = nth_node(l->head, i);
       huff_tree_node* temp = one_after -> data;
@@ -98,7 +96,6 @@ void forest_insert(forest l, huff_tree_node* node)
 	break;
     }
     forest_node_insert_after(one_before, node);
-    printf("1234\n");
   }
     l->size++;
 }
@@ -110,6 +107,11 @@ huff_tree_node* forest_get(forest l, int n)
   return nth_node(l->head, n)->data;
 }
 
+//get the head of the forest
+forest_node* forest_head(forest l)
+{
+  return l->head;
+}
 
 // frees an llist. Takes O(size(l)) steps.
 void forest_free(forest l)

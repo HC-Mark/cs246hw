@@ -13,19 +13,20 @@ void print_table(int* arr, int n){
       printf("%c has frequency: %d\n",i,arr[i]);
   }
 }
-/*
+
 void print_forest(forest l){
-  if(l->head == NULL)
+  forest_node* head = forest_head(l);
+  if(head == NULL)
     printf("invalid forest, sad\n");
   else{
     forest_node* f;
-    for(f = l->head;f != NULL; f = f -> next){
-      printf("%c has frequency: %d\n", f->ch, f->freq);
+    for(f = head;f != NULL; f = f -> next){
+      printf("%c has frequency: %d\n", f->data->ch, f->data->freq);
     }
   }
 
 }
-*/
+
 int main(int argc, char** argv){
   FILE* fp;
   char target[STRING_LENGTH];
@@ -54,7 +55,7 @@ int main(int argc, char** argv){
     if(test[i]){
       int ch = test[i] -> ch;
       int freq = test[i] -> freq;
-      printf("this node contains %c with frequency of %d\n",ch,freq);
+      //printf("this node contains %c with frequency of %d\n",ch,freq);
     }
   }
 
@@ -62,7 +63,9 @@ int main(int argc, char** argv){
   for(int i = 0; i < counter; i++){
     forest_insert(f,test[i]);
   }
-  printf("the total amount of nodes in forest is %d\n", forest_size(f) );
+
+  print_forest(f);
+  // printf("the total amount of nodes in forest is %d\n", forest_size(f) );
   // printf("the total amount of nodes in array is %d\n", counter);
   return 0;
 }

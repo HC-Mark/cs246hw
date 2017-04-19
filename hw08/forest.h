@@ -38,6 +38,8 @@ void forest_insert(forest l, huff_tree_node* node);
 // precondition: the list has at least (n+1) elements
 huff_tree_node* forest_get(forest l, int n);
 
+// access the underlying head llist_node. Useful for iteration.
+forest_node* forest_head(forest l);
 
 // frees an llist. Takes O(size(l)) steps.
 void forest_free(forest l);
