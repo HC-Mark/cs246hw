@@ -10,7 +10,7 @@
 
 void print_table(int* arr, int n){
   for(int i = 0; i < n; i++){
-    if(arr[i] != 0)
+    //if(arr[i] != 0)
       printf("%c has frequency: %d\n",i,arr[i]);
   }
 }
@@ -76,8 +76,16 @@ void fillTable(int huffTable[], huff_tree_node* tree, int code){
   if(loc >= 0)
     huffTable[loc] = code;
   else{
-    fillTable(huffTable,tree->left,code*10+1);//we use 1 stands for binary 0
-    fillTable(huffTable,tree->right,code*10+2);//use 2 stands for binary 1
+    //decimal method
+    //fillTable(huffTable,tree->left,code*10+1);//we use 1 stands for binary 0
+    //fillTable(huffTable,tree->right,code*10+2);//use 2 stands for binary 1
+
+    //binary method-- char a turns to be zero and have no way to identify from other character which has zero freq.
+    code = code << 1;
+    int left = code + 0;
+    int right = code + 1;
+    fillTable(huffTable,tree->left,left);
+    fillTable(huffTable,tree->right,right);
   }
 
 }
@@ -128,6 +136,12 @@ int main(int argc, char** argv){
    //print_huff_tree(new_tree);
   // printf("the total amount of nodes in forest is %d\n", forest_size(f) );
   // printf("the total amount of nodes in array is %d\n", counter);
+   //create a new file and store output in it
+   FILE* dest;
+   dest = fopen("dest.huff","wb");
+   fwrite(frequency,sizeof(int),sizeof(frequency)/sizeof(int),dest);//need divide the size of type
+   fclose(dest);
+   fclose(fp);
   return 0;
 }
 
