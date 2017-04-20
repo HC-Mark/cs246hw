@@ -64,11 +64,24 @@ huff_tree_node* buildTree(forest l){
     forest_insert(l,internal);
     counter--;
     size = forest_size(l);
+    // print_forest(l);
   }
   
   tree = forest_pop(l);
   return tree;
 }
+//the initial input of code is 0, and we use that to identify the root
+void fillTable(int huffTable[], huff_tree_node* tree, int code){
+  int loc = tree->ch;
+  if(loc >= 0)
+    huffTable[loc] = code;
+  else{
+    fillTable(huffTable,tree->left,code*10+1);//we use 1 stands for binary 0
+    fillTable(huffTable,tree->right,code*10+2);//use 2 stands for binary 1
+  }
+
+}
+
 
 int main(int argc, char** argv){
   FILE* fp;
@@ -107,9 +120,12 @@ int main(int argc, char** argv){
     forest_insert(f,test[i]);
   }
 
-   print_forest(f);
-   //huff_tree_node* new_tree = buildTree(f);
-  //print_huff_tree(new_tree);
+  //print_forest(f);
+   huff_tree_node* new_tree = buildTree(f);
+   int huff_Table[TABLE_LENGTH] = {0};
+   fillTable(huff_Table,new_tree,0);
+   print_table(huff_Table,TABLE_LENGTH);
+   //print_huff_tree(new_tree);
   // printf("the total amount of nodes in forest is %d\n", forest_size(f) );
   // printf("the total amount of nodes in array is %d\n", counter);
   return 0;

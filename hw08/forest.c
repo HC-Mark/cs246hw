@@ -65,39 +65,52 @@ void forest_insert(forest l, huff_tree_node* node)
   if(l->head == NULL)
   {
     forest_push(l, node);
+    //printf("12\n");
     return;
   }
   else if(l->head->data->freq > node->freq){
     forest_push(l,node);
+    //printf("123\n");
     return;
   }
   else if(tail-> data -> freq < node->freq){
     forest_node_insert_after(tail,node);
+    //printf("12345\n");
   }
   else
     {
-      int i;
-      forest_node* one_before;
-      forest_node* one_after;
-    for(i = 1; i < size ; i++){
-          //printf("%d\n",i);
-      one_before = nth_node(l->head,i-1);
-      one_after = nth_node(l->head, i);
-      huff_tree_node* temp = one_after -> data;
-      if(temp ->freq < node -> freq)
-	continue;
-      else if(temp ->freq == node->freq){
-	if(temp-> ch > node->ch)
-	  break;
-	else
-	  continue;
+      //if the head freq and node freq is the same
+      if(l->head->data->freq == node->freq){
+	if(l->head->data->ch > node->ch){
+	  forest_push(l,node);
+	  //printf("12345\n");
+	  return;
+	}
       }
-      else
-	break;
+	int i;
+	forest_node* one_before;
+	forest_node* one_after;
+	for(i = 1; i < size ; i++){
+	  //printf("%d\n",i);
+	  one_before = nth_node(l->head,i-1);
+	  one_after = nth_node(l->head, i);
+	  huff_tree_node* temp = one_after -> data;
+	  if(temp ->freq < node -> freq)
+	    continue;
+	  else if(temp ->freq == node->freq){
+	    if(temp-> ch > node->ch)
+	      break;
+	    else
+	      continue;
+	  }
+	  else
+	    break;
+	}
+	forest_node_insert_after(one_before, node);
+	//printf("123456\n");
     }
-    forest_node_insert_after(one_before, node);
-  }
-    l->size++;
+      l->size++;
+    
 }
 
 // retrieves the nth element of the llist. Takes O(n) steps.
