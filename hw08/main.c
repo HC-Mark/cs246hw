@@ -3,9 +3,10 @@
 #include <string.h>
 
 #include "forest.h"
+//include "huff_tree.h"
 
 #define STRING_LENGTH 100
-#define TABLE_LENGTH 128
+#define TABLE_LENGTH 256
 
 void print_table(int* arr, int n){
   for(int i = 0; i < n; i++){
@@ -24,7 +25,49 @@ void print_forest(forest l){
       printf("%c has frequency: %d\n", f->data->ch, f->data->freq);
     }
   }
+}
 
+void print_huff_tree(huff_tree_node* root){
+  if(root){
+    int result = root -> ch;
+    if(result < 0){
+      printf("This internal node has id %d and it has freq %d\n",result,root->freq);
+      huff_tree_node* left = root -> left;
+      huff_tree_node* right = root -> right;
+      if(left->ch < 0)
+	printf("its left child is internal which has id %d\n", left->ch);
+      else
+	printf("its left child is a char %c\n",left->ch);
+      if(right->ch< 0)
+	printf("its right child is internal which has id %d\n", right->ch);
+      else
+	printf("its right child is a char %c\n",right->ch);
+    }
+    else
+      printf("This character is %c and its freq is %d\n",result, root->freq);
+
+    print_huff_tree(root->left);
+    print_huff_tree(root->right);
+  }
+}
+
+huff_tree_node* buildTree(forest l){
+  huff_tree_node* tree;
+  int size = forest_size(l);
+  int counter = -1;
+  while( size > 1){
+    // printf("tell me the size %d\n",size);
+    huff_tree_node* smallest = forest_pop(l);
+    huff_tree_node* smallTwo = forest_pop(l);
+    int new_freq = smallest->freq + smallTwo -> freq;
+    huff_tree_node* internal = new_node(counter, new_freq,smallest,smallTwo);
+    forest_insert(l,internal);
+    counter--;
+    size = forest_size(l);
+  }
+  
+  tree = forest_pop(l);
+  return tree;
 }
 
 int main(int argc, char** argv){
@@ -64,7 +107,9 @@ int main(int argc, char** argv){
     forest_insert(f,test[i]);
   }
 
-  print_forest(f);
+   print_forest(f);
+   //huff_tree_node* new_tree = buildTree(f);
+  //print_huff_tree(new_tree);
   // printf("the total amount of nodes in forest is %d\n", forest_size(f) );
   // printf("the total amount of nodes in array is %d\n", counter);
   return 0;
