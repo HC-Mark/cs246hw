@@ -86,6 +86,12 @@ void forest_insert(forest l, huff_tree_node* node)
 	  //printf("12345\n");
 	  return;
 	}
+	//if only one element exists, without this will cause segmentation fault
+	if(size == 1){
+	  forest_node_insert_after(l->head,node);
+	  l->size ++;
+	  return;
+	}
       }
 	int i;
 	forest_node* one_before;
