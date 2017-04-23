@@ -83,12 +83,13 @@ void forest_insert(forest l, huff_tree_node* node)
       if(l->head->data->freq == node->freq){
 	if(l->head->data->ch > node->ch){
 	  forest_push(l,node);
-	  //printf("12345\n");
 	  return;
 	}
-	//if only one element exists, without this will cause segmentation fault
-	if(size == 1){
-	  forest_node_insert_after(l->head,node);
+      }
+      //if only one element exists, without this will cause segmentation fault
+      if(tail->data->freq == node->freq){
+	if(tail -> data -> freq < node->ch){
+	  forest_node_insert_after(tail,node);
 	  l->size ++;
 	  return;
 	}
