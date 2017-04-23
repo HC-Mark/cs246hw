@@ -8,13 +8,28 @@
 #define STRING_LENGTH 100
 #define TABLE_LENGTH 256
 
+typedef struct table_elem{
+  int num_bits;//how many bits this character will take
+  int code;//the actually code encoded by the huff_tree algorithms
+}table_elem;
+
 void print_table(int* arr, int n){
   for(int i = 0; i < n; i++){
-    //if(arr[i] != 0)
+    if(arr[i] != 0)
       printf("%c has frequency: %d\n",i,arr[i]);
   }
 }
 
+void print_huff_table(table_elem** arr, int n){
+  for(int i = 0; i < n; i++){
+    if(arr[i]){
+      int code = arr[i]-> code;
+      int num_bits = arr[i] -> num_bits;
+      printf("the huff code of %c is %d and it has %d bits\n",i, code, num_bits);
+    }
+  }
+
+}
 void print_forest(forest l){
   forest_node* head = forest_head(l);
   if(head == NULL)
@@ -64,33 +79,66 @@ huff_tree_node* buildTree(forest l){
     forest_insert(l,internal);
     counter--;
     size = forest_size(l);
-    // print_forest(l);
   }
   
   tree = forest_pop(l);
   return tree;
 }
+
 //the initial input of code is 0, and we use that to identify the root
-void fillTable(int huffTable[], huff_tree_node* tree, int code){
+/*
+void fillTable1(int huffTable[], huff_tree_node* tree, int code){
   int loc = tree->ch;
   if(loc >= 0)
     huffTable[loc] = code;
   else{
     //decimal method
-    //fillTable(huffTable,tree->left,code*10+1);//we use 1 stands for binary 0
-    //fillTable(huffTable,tree->right,code*10+2);//use 2 stands for binary 1
+    printf("go left\n");
+    fillTable1(huffTable,tree->left,code*10+1);//we use 1 stands for binary 0
+    printf("go right\n");
+    fillTable1(huffTable,tree->right,code*10+2);//use 2 stands for binary 1
 
     //binary method-- char a turns to be zero and have no way to identify from other character which has zero freq.
-    code = code << 1;
-    int left = code + 0;
-    int right = code + 1;
-    fillTable(huffTable,tree->left,left);
-    fillTable(huffTable,tree->right,right);
+    //code = code << 1;
+    // int left = code + 0;
+    // int right = code + 1;
+    // fillTable(huffTable,tree->left,left);
+    // fillTable(huffTable,tree->right,right);
   }
 
 }
-
-
+*/
+//fill in the huff_table
+void fillTable(table_elem* huffTable[], huff_tree_node* tree, int code,int counter){
+  if(tree){
+    int loc = tree->ch;
+    if(loc >= 0){
+      printf("store %c in table\n", loc);
+      table_elem* store;
+      store->code = code;
+      store->num_bits = counter;
+      huffTable[loc] = store;
+    }
+    else{
+      counter ++;      
+      //binary method-- char a turns to be zero and have no way to identify from other character which has zero freq.
+      //we need a new data structure to store the bits infor
+      code = code << 1;
+      int left = code + 0;
+      int right = code + 1;
+      printf("go left\n");
+      fillTable(huffTable,tree->left,left,counter);
+      printf("go right\n");
+      if(tree->right)
+	printf("let me know what is that %d\n", tree->right);
+      else
+	printf("It is NULL\n");
+      fillTable(huffTable,tree->right,right,counter);
+      
+    }
+  }
+  
+}
 int main(int argc, char** argv){
   FILE* fp;
   char target[STRING_LENGTH];
@@ -115,28 +163,26 @@ int main(int argc, char** argv){
     //test[counter++] = NULL;
   }
   
-  for(int i = 0; i < counter; i++){
-    if(test[i]){
-      int ch = test[i] -> ch;
-      int freq = test[i] -> freq;
-      //printf("this node contains %c with frequency of %d\n",ch,freq);
-    }
-  }
-
   forest f = forest_new();
   for(int i = 0; i < counter; i++){
     forest_insert(f,test[i]);
   }
 
   //print_forest(f);
-   huff_tree_node* new_tree = buildTree(f);
-   int huff_Table[TABLE_LENGTH] = {0};
-   fillTable(huff_Table,new_tree,0);
-   print_table(huff_Table,TABLE_LENGTH);
-   //print_huff_tree(new_tree);
+  huff_tree_node* new_tree = buildTree(f);
+  print_huff_tree(new_tree);
+  table_elem* huff_Table[TABLE_LENGTH] = {};
+
+  //test
+  //int huff_Table[TABLE_LENGTH] = {};
+  //fillTable1(huff_Table,new_tree,0);
+  //print_table(huff_Table,256);
+  
+  // fillTable(huff_Table,new_tree,0,0);
+  //print_huff_table(huff_Table,TABLE_LENGTH);
   // printf("the total amount of nodes in forest is %d\n", forest_size(f) );
   // printf("the total amount of nodes in array is %d\n", counter);
-   //create a new file and store output in it
+   //put the frequency table in the dest file
    FILE* dest;
    dest = fopen("dest.huff","wb");
    fwrite(frequency,sizeof(int),sizeof(frequency)/sizeof(int),dest);//need divide the size of type
