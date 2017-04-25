@@ -110,17 +110,18 @@ void compressFile(FILE* input, FILE* output, table_elem* table[]){
   char bit ,ch, store = 0;
   int code, length, bitsLeft = 8;
   while((ch = getc(input)) != EOF){
-    printf("this char is %c\n",ch);
+    // printf("this char is %c\n",ch);
     int loc = (int)ch;
     table_elem* element = table[loc];
     length = element->num_bits;
     code = element->code;
 
     while(length > 0){
-      bit = code % 2;
-      code = code >> 1;
+      bit = code;
+      bit = bit >> (length -1);
+      code &= ~(1 << (length-1));//clear the bit the left-most bit
       store = store | bit;
-      printf("store is %d\n",store);
+      // printf("store is %d\n",store);
       bitsLeft--;
       length--;
       //if we store 8 bits in store, then we put that char to our output file and clear the store variable
@@ -130,14 +131,23 @@ void compressFile(FILE* input, FILE* output, table_elem* table[]){
 	store = 0;
 	bitsLeft = 8;
       }
-
       store = store << 1;
     }
   }
-  
-		     
+
+  if (bitsLeft != 8){
+    store = store << (bitsLeft -1);
+    fputc(store,output);
+  }
+  return;
 }
 
+void free_table(table_elem* arr[], int n){
+  for(int i = 0; i < n; i++){
+    if(arr[i])
+      free(arr[i]);
+  }
+}
 int main(int argc, char** argv){
   FILE* input;
   char target[STRING_LENGTH];
@@ -179,8 +189,15 @@ int main(int argc, char** argv){
    //put the frequency table in the dest file
    FILE* dest;
    dest = fopen("dest.huff","wb");
-   //fwrite(frequency,sizeof(int),sizeof(frequency)/sizeof(int),dest);//need divide the size of type
+   fwrite(frequency,sizeof(int),sizeof(frequency)/sizeof(int),dest);//need divide the size of type
    compressFile(input,dest,huff_Table);
+   
+   //free all the memory we used
+   free(f);
+   free_tree(new_tree);
+   free_table(huff_Table,TABLE_LENGTH);
+
+   //close the file we opened
    fclose(dest);
    fclose(input);
   return 0;
