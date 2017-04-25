@@ -188,7 +188,9 @@ int main(int argc, char** argv){
   // printf("the total amount of nodes in array is %d\n", counter);
    //put the frequency table in the dest file
    FILE* dest;
-   dest = fopen("dest.huff","wb");
+   char output[STRING_LENGTH];
+   strcpy(output,argv[2]);
+   dest = fopen(output,"wb");
    fwrite(frequency,sizeof(int),sizeof(frequency)/sizeof(int),dest);//need divide the size of type
    compressFile(input,dest,huff_Table);
    
